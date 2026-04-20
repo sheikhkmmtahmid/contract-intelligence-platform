@@ -1,0 +1,724 @@
+{
+  "classifier": {
+    "model_type": "ensemble_legalbert_legalroberta",
+    "f1_macro": 0.6058428660860041,
+    "precision_macro": 0.5858013373502766,
+    "recall_macro": 0.6428524800998369,
+    "per_class": {
+      "Competitive Restriction Exception": {
+        "precision": 0.3888888888888889,
+        "recall": 0.6363636363636364,
+        "f1-score": 0.4827586206896552,
+        "support": 11.0
+      },
+      "Non-Compete": {
+        "precision": 0.8333333333333334,
+        "recall": 0.5555555555555556,
+        "f1-score": 0.6666666666666666,
+        "support": 27.0
+      },
+      "Exclusivity": {
+        "precision": 0.7105263157894737,
+        "recall": 0.6923076923076923,
+        "f1-score": 0.7012987012987013,
+        "support": 39.0
+      },
+      "No-Solicit Of Customers": {
+        "precision": 0.5714285714285714,
+        "recall": 0.5714285714285714,
+        "f1-score": 0.5714285714285714,
+        "support": 7.0
+      },
+      "No-Solicit Of Employees": {
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1-score": 0.6666666666666666,
+        "support": 10.0
+      },
+      "Non-Disparagement": {
+        "precision": 0.8333333333333334,
+        "recall": 0.7142857142857143,
+        "f1-score": 0.7692307692307693,
+        "support": 7.0
+      },
+      "Termination For Convenience": {
+        "precision": 0.9141104294478528,
+        "recall": 0.8869047619047619,
+        "f1-score": 0.9003021148036254,
+        "support": 168.0
+      },
+      "Rofr/Rofo/Rofn": {
+        "precision": 0.8648648648648649,
+        "recall": 0.8648648648648649,
+        "f1-score": 0.8648648648648649,
+        "support": 37.0
+      },
+      "Change Of Control": {
+        "precision": 0.6774193548387096,
+        "recall": 0.875,
+        "f1-score": 0.7636363636363637,
+        "support": 24.0
+      },
+      "Anti-Assignment": {
+        "precision": 0.9079497907949791,
+        "recall": 0.9234042553191489,
+        "f1-score": 0.9156118143459916,
+        "support": 235.0
+      },
+      "Revenue/Profit Sharing": {
+        "precision": 0.8297872340425532,
+        "recall": 0.975,
+        "f1-score": 0.896551724137931,
+        "support": 40.0
+      },
+      "Price Restrictions": {
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1-score": 0.6666666666666666,
+        "support": 2.0
+      },
+      "Minimum Commitment": {
+        "precision": 0.7954545454545454,
+        "recall": 0.875,
+        "f1-score": 0.8333333333333334,
+        "support": 40.0
+      },
+      "Volume Restriction": {
+        "precision": 0.7272727272727273,
+        "recall": 0.9411764705882353,
+        "f1-score": 0.8205128205128205,
+        "support": 17.0
+      },
+      "IP Ownership Assignment": {
+        "precision": 0.9361702127659575,
+        "recall": 0.946236559139785,
+        "f1-score": 0.9411764705882353,
+        "support": 93.0
+      },
+      "Joint IP Ownership": {
+        "precision": 0.5714285714285714,
+        "recall": 0.8,
+        "f1-score": 0.6666666666666666,
+        "support": 10.0
+      },
+      "License Grant": {
+        "precision": 0.8863636363636364,
+        "recall": 0.896551724137931,
+        "f1-score": 0.8914285714285715,
+        "support": 87.0
+      },
+      "Non-Transferable License": {
+        "precision": 0.7666666666666667,
+        "recall": 0.7931034482758621,
+        "f1-score": 0.7796610169491526,
+        "support": 29.0
+      },
+      "Affiliate License-Licensor": {
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1-score": 0.8,
+        "support": 2.0
+      },
+      "Affiliate License-Licensee": {
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1-score": 0.8,
+        "support": 2.0
+      },
+      "Unlimited/All-You-Can-Eat-License": {
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1-score": 0.6666666666666666,
+        "support": 1.0
+      },
+      "Irrevocable Or Perpetual License": {
+        "precision": 0.25,
+        "recall": 1.0,
+        "f1-score": 0.4,
+        "support": 1.0
+      },
+      "Source Code Escrow": {
+        "precision": 0.75,
+        "recall": 0.8571428571428571,
+        "f1-score": 0.8,
+        "support": 7.0
+      },
+      "Post-Termination Services": {
+        "precision": 0.7555555555555555,
+        "recall": 0.7391304347826086,
+        "f1-score": 0.7472527472527473,
+        "support": 46.0
+      },
+      "Audit Rights": {
+        "precision": 0.9253731343283582,
+        "recall": 0.9538461538461539,
+        "f1-score": 0.9393939393939394,
+        "support": 65.0
+      },
+      "Uncapped Liability": {
+        "precision": 0.7391304347826086,
+        "recall": 0.9444444444444444,
+        "f1-score": 0.8292682926829268,
+        "support": 18.0
+      },
+      "Cap On Liability": {
+        "precision": 0.8888888888888888,
+        "recall": 0.9696969696969697,
+        "f1-score": 0.927536231884058,
+        "support": 66.0
+      },
+      "Liquidated Damages": {
+        "precision": 0.75,
+        "recall": 0.8181818181818182,
+        "f1-score": 0.782608695652174,
+        "support": 11.0
+      },
+      "Warranty Duration": {
+        "precision": 0.8,
+        "recall": 0.9411764705882353,
+        "f1-score": 0.8648648648648649,
+        "support": 17.0
+      },
+      "Insurance": {
+        "precision": 0.9796954314720813,
+        "recall": 0.9747474747474747,
+        "f1-score": 0.9772151898734177,
+        "support": 198.0
+      },
+      "Covenant Not To Sue": {
+        "precision": 0.9411764705882353,
+        "recall": 0.9411764705882353,
+        "f1-score": 0.9411764705882353,
+        "support": 17.0
+      },
+      "Third Party Beneficiary": {
+        "precision": 0.8,
+        "recall": 1.0,
+        "f1-score": 0.8888888888888888,
+        "support": 4.0
+      },
+      "Most Favored Nation": {
+        "precision": 0.75,
+        "recall": 0.75,
+        "f1-score": 0.75,
+        "support": 4.0
+      },
+      "Governing Law": {
+        "precision": 0.9668737060041408,
+        "recall": 0.9936170212765958,
+        "f1-score": 0.9800629590766002,
+        "support": 470.0
+      },
+      "Dispute Resolution": {
+        "precision": 0.9245283018867925,
+        "recall": 0.98,
+        "f1-score": 0.9514563106796117,
+        "support": 50.0
+      },
+      "Limitations Of Liability": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Indemnification": {
+        "precision": 0.9083969465648855,
+        "recall": 0.967479674796748,
+        "f1-score": 0.937007874015748,
+        "support": 123.0
+      },
+      "Agreement Date": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Effective Date": {
+        "precision": 0.8375,
+        "recall": 0.9571428571428572,
+        "f1-score": 0.8933333333333333,
+        "support": 70.0
+      },
+      "Expiration Date": {
+        "precision": 0.9534883720930233,
+        "recall": 0.9111111111111111,
+        "f1-score": 0.9318181818181818,
+        "support": 45.0
+      },
+      "Renewal Term": {
+        "precision": 0.8095238095238095,
+        "recall": 0.85,
+        "f1-score": 0.8292682926829268,
+        "support": 20.0
+      },
+      "Confidentiality": {
+        "precision": 0.9777777777777777,
+        "recall": 0.9924812030075187,
+        "f1-score": 0.9850746268656716,
+        "support": 133.0
+      },
+      "Amendments": {
+        "precision": 0.9174757281553398,
+        "recall": 0.9692307692307692,
+        "f1-score": 0.942643391521197,
+        "support": 195.0
+      },
+      "Anti-Corruption Laws": {
+        "precision": 0.9285714285714286,
+        "recall": 0.8666666666666667,
+        "f1-score": 0.896551724137931,
+        "support": 15.0
+      },
+      "Approvals And Consents": {
+        "precision": 0.8846153846153846,
+        "recall": 1.0,
+        "f1-score": 0.9387755102040817,
+        "support": 23.0
+      },
+      "Authority": {
+        "precision": 0.8513513513513513,
+        "recall": 0.9264705882352942,
+        "f1-score": 0.8873239436619719,
+        "support": 68.0
+      },
+      "Compliance With Laws": {
+        "precision": 0.9565217391304348,
+        "recall": 0.9850746268656716,
+        "f1-score": 0.9705882352941176,
+        "support": 134.0
+      },
+      "Consent To Jurisdiction": {
+        "precision": 0.8653846153846154,
+        "recall": 0.8823529411764706,
+        "f1-score": 0.8737864077669902,
+        "support": 51.0
+      },
+      "Definitions": {
+        "precision": 0.9393939393939394,
+        "recall": 0.9465648854961832,
+        "f1-score": 0.9429657794676806,
+        "support": 131.0
+      },
+      "Enforceability": {
+        "precision": 0.8529411764705882,
+        "recall": 0.8529411764705882,
+        "f1-score": 0.8529411764705882,
+        "support": 34.0
+      },
+      "Entire Agreements": {
+        "precision": 0.9748603351955307,
+        "recall": 0.9914772727272727,
+        "f1-score": 0.9830985915492958,
+        "support": 352.0
+      },
+      "Expenses": {
+        "precision": 0.9433962264150944,
+        "recall": 0.9493670886075949,
+        "f1-score": 0.9463722397476341,
+        "support": 158.0
+      },
+      "Force Majeure": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Further Assurances": {
+        "precision": 0.9545454545454546,
+        "recall": 0.9545454545454546,
+        "f1-score": 0.9545454545454546,
+        "support": 132.0
+      },
+      "Interests": {
+        "precision": 0.9333333333333333,
+        "recall": 0.9130434782608695,
+        "f1-score": 0.9230769230769231,
+        "support": 46.0
+      },
+      "Liens And Encumbrances": {
+        "precision": 0.9090909090909091,
+        "recall": 0.975609756097561,
+        "f1-score": 0.9411764705882353,
+        "support": 41.0
+      },
+      "Limitations Of Remedies": {
+        "precision": 0.9493670886075949,
+        "recall": 0.8333333333333334,
+        "f1-score": 0.8875739644970414,
+        "support": 90.0
+      },
+      "Non-Waiver": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Notices": {
+        "precision": 0.9287749287749287,
+        "recall": 0.9848942598187311,
+        "f1-score": 0.9560117302052786,
+        "support": 331.0
+      },
+      "Organization And Existence": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Payments": {
+        "precision": 0.8487394957983193,
+        "recall": 0.8706896551724138,
+        "f1-score": 0.8595744680851064,
+        "support": 116.0
+      },
+      "Representations And Warranties": {
+        "precision": 0.9071428571428571,
+        "recall": 0.8819444444444444,
+        "f1-score": 0.8943661971830986,
+        "support": 144.0
+      },
+      "Sanctions": {
+        "precision": 0.875,
+        "recall": 0.9333333333333333,
+        "f1-score": 0.9032258064516129,
+        "support": 15.0
+      },
+      "Securities Law Compliance": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Severability": {
+        "precision": 0.97265625,
+        "recall": 0.9764705882352941,
+        "f1-score": 0.974559686888454,
+        "support": 255.0
+      },
+      "Specific Performance": {
+        "precision": 0.9,
+        "recall": 0.96,
+        "f1-score": 0.9290322580645162,
+        "support": 75.0
+      },
+      "Successors And Assigns": {
+        "precision": 0.8591549295774648,
+        "recall": 0.9682539682539683,
+        "f1-score": 0.9104477611940298,
+        "support": 63.0
+      },
+      "Survival": {
+        "precision": 0.8727272727272727,
+        "recall": 0.9896907216494846,
+        "f1-score": 0.927536231884058,
+        "support": 194.0
+      },
+      "Taxes And Withholding": {
+        "precision": 0.922077922077922,
+        "recall": 0.9530201342281879,
+        "f1-score": 0.9372937293729373,
+        "support": 149.0
+      },
+      "Trade Controls": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Transactions With Affiliates": {
+        "precision": 0.96,
+        "recall": 1.0,
+        "f1-score": 0.9795918367346939,
+        "support": 48.0
+      },
+      "Waiver Of Jury Trial": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Waivers": {
+        "precision": 0.8604651162790697,
+        "recall": 0.925,
+        "f1-score": 0.891566265060241,
+        "support": 120.0
+      },
+      "No-Shop": {
+        "precision": 0.8902439024390244,
+        "recall": 1.0,
+        "f1-score": 0.9419354838709677,
+        "support": 73.0
+      },
+      "Material Adverse Effect": {
+        "precision": 0.9625,
+        "recall": 1.0,
+        "f1-score": 0.9808917197452229,
+        "support": 77.0
+      },
+      "Hell-Or-High-Water": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Termination Fee": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Reverse Termination Fee": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Matching Rights": {
+        "precision": 0.7850467289719626,
+        "recall": 1.0,
+        "f1-score": 0.8795811518324608,
+        "support": 84.0
+      },
+      "Superior Offer Definition": {
+        "precision": 0.4406779661016949,
+        "recall": 0.896551724137931,
+        "f1-score": 0.5909090909090909,
+        "support": 29.0
+      },
+      "Fiduciary Exception": {
+        "precision": 0.40350877192982454,
+        "recall": 0.8214285714285714,
+        "f1-score": 0.5411764705882353,
+        "support": 28.0
+      },
+      "Antitrust Efforts Standard": {
+        "precision": 0.8627450980392157,
+        "recall": 1.0,
+        "f1-score": 0.9263157894736842,
+        "support": 44.0
+      },
+      "Operating Covenants": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Expense Reimbursement": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Intervening Event Definition": {
+        "precision": 0.8857142857142857,
+        "recall": 0.96875,
+        "f1-score": 0.9253731343283582,
+        "support": 64.0
+      },
+      "Board Recommendation Change": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Tail Period": {
+        "precision": 0.9425287356321839,
+        "recall": 1.0,
+        "f1-score": 0.9704142011834319,
+        "support": 82.0
+      },
+      "Data Protection And Privacy": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Employment And Benefits": {
+        "precision": 0.9481481481481482,
+        "recall": 0.9770992366412213,
+        "f1-score": 0.9624060150375939,
+        "support": 262.0
+      },
+      "Capitalization": {
+        "precision": 0.95,
+        "recall": 1.0,
+        "f1-score": 0.9743589743589743,
+        "support": 57.0
+      },
+      "Publicity And Announcements": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Non-Solicitation General": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Step-In Rights": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Benchmarking Rights": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Electronic Signatures And Counterparts": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Service Level Agreement": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Subcontracting": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Assignment Of Receivables": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Performance Bonds": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Escrow And Holdback": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Ford Credit Ford Exchange Note Credit": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Indemnitee Proceeding Proceeding Proceeding Insurance Policy": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Bankruptcy Event Owner Trustee Bankruptcy Owner": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Owner Trustee Owner Trustee Trust": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Owner Trustee Certificate Trustee Owner": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "Lender Agent Administrative Agent Administrative": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "micro avg": {
+        "precision": 0.9027777777777778,
+        "recall": 0.9481186805900879,
+        "f1-score": 0.9248928773546771,
+        "support": 6033.0
+      },
+      "macro avg": {
+        "precision": 0.5858013373502766,
+        "recall": 0.6428524800998369,
+        "f1-score": 0.6058428660860041,
+        "support": 6033.0
+      },
+      "weighted avg": {
+        "precision": 0.9103244077023946,
+        "recall": 0.9481186805900879,
+        "f1-score": 0.927038349076267,
+        "support": 6033.0
+      },
+      "samples avg": {
+        "precision": 0.92454178577434,
+        "recall": 0.9514601199484335,
+        "f1-score": 0.9323300263438148,
+        "support": 6033.0
+      }
+    },
+    "test_size": 5947
+  },
+  "anomaly_detector": {
+    "precision_at_k": 0.24,
+    "recall_at_k": 0.03260869565217391,
+    "k": 50,
+    "test_size": 5947,
+    "proxy_anomalies": 368,
+    "note": "Evaluated using proxy anomaly labels (extreme clause length). No ground-truth anomaly labels exist in CUAD."
+  },
+  "power_scorer": {
+    "feature_stats": {
+      "sentiment_score": {
+        "mean": 0.48169244357850405,
+        "std": 0.08200563868377879,
+        "min": 0.1626949878409505,
+        "max": 0.6340039670467377
+      },
+      "modal_score": {
+        "mean": 0.7109675324675325,
+        "std": 0.32955036156357864,
+        "min": 0.0,
+        "max": 1.0
+      },
+      "obligation_score": {
+        "mean": 0.3225,
+        "std": 0.28309799074138453,
+        "min": 0.0,
+        "max": 1.0
+      },
+      "assertiveness_score": {
+        "mean": 0.49535714285714283,
+        "std": 0.3221687479768895,
+        "min": 0.0,
+        "max": 1.0
+      },
+      "length_score": {
+        "mean": 0.43315570562898537,
+        "std": 0.10135541567412226,
+        "min": 0.34989460238814707,
+        "max": 0.9783608001823484
+      }
+    },
+    "imbalance_distribution": {
+      "mean": 2.1911666212442085,
+      "std": 27.485748546443745,
+      "min": -58.290456395261714,
+      "max": 70.80659543820201,
+      "p25": -17.637405383006335,
+      "p75": 18.929145343911827
+    },
+    "consistency_check_passed": true,
+    "sample_size": 200,
+    "methodology_note": "Feature-engineered scorer. No ground-truth imbalance labels exist publicly. Evaluation reports feature contribution analysis and score distribution. See model_card.md."
+  }
+}

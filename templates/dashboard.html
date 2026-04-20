@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contract Intelligence Platform</title>
+
+  <!-- SVG Favicon — Justice Scales -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%230A1628'/%3E%3Ccircle cx='32' cy='32' r='29' fill='none' stroke='%23C9A84C' stroke-width='1.5'/%3E%3Cg stroke='%23C9A84C' stroke-linecap='round' stroke-linejoin='round' fill='none'%3E%3Cline x1='32' y1='14' x2='32' y2='50' stroke-width='2.5'/%3E%3Cline x1='21' y1='50' x2='43' y2='50' stroke-width='2.5'/%3E%3Cline x1='32' y1='21' x2='17' y2='29' stroke-width='2'/%3E%3Cline x1='32' y1='21' x2='47' y2='29' stroke-width='2'/%3E%3Ccircle cx='32' cy='20.5' r='2.8' fill='%23C9A84C' stroke='none'/%3E%3Cpath d='M10 34 Q17 40 24 34' stroke-width='2'/%3E%3Cline x1='10' y1='34' x2='24' y2='34' stroke-width='2'/%3E%3Cpath d='M40 34 Q47 40 54 34' stroke-width='2'/%3E%3Cline x1='40' y1='34' x2='54' y2='34' stroke-width='2'/%3E%3C/g%3E%3C/svg%3E" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* =====================================================================
+       DESIGN SYSTEM — Polished legal dark theme
+       Typefaces: Crimson Text (serifs/headings), Inter (UI/body)
+       Palette: Deep navy · Warm gold · Muted greys · Semantic signals
+       ===================================================================== */
+    :root {
+      --navy:          #080f1e;
+      --navy-mid:      #0c1829;
+      --navy-surface:  #101f35;
+      --navy-raised:   #162843;
+      --navy-border:   #1c3154;
+
+      --gold:          #c9a84c;
+      --gold-bright:   #e8cc7a;
+      --gold-light:    #f2dfa0;
+      --gold-dim:      #8c6b28;
+      --gold-glow:     rgba(201,168,76,0.14);
+      --gold-glow-sm:  rgba(201,168,76,0.07);
+
+      --white:         #f5f2ec;
+      --grey-100:      #dbd7ce;
+      --grey-200:      #aaa69e;
+      --grey-300:      #6b6760;
+      --grey-400:      #3a3834;
+
+      --red:           #c24a4a;
+      --red-dim:       rgba(194,74,74,0.16);
+      --amber:         #c87d35;
+      --amber-dim:     rgba(200,125,53,0.16);
+      --green:         #3d9468;
+      --green-dim:     rgba(61,148,104,0.16);
+      --blue:          #2f6ea0;
+      --blue-dim:      rgba(47,110,160,0.16);
+
+      --border:        rgba(201,168,76,0.2);
+      --border-subtle: rgba(201,168,76,0.09);
+      --radius-sm:     5px;
+      --radius:        10px;
+      --radius-lg:     14px;
+      --shadow-sm:     0 2px 10px rgba(0,0,0,0.35);
+      --shadow:        0 6px 28px rgba(0,0,0,0.5);
+      --shadow-lg:     0 12px 50px rgba(0,0,0,0.65);
+      --transition:    0.18s ease;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 14px;
+      background-color: var(--navy);
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201,168,76,0.06) 0%, transparent 70%),
+        url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='1' cy='1' r='0.8' fill='%23c9a84c' fill-opacity='0.055'/%3E%3C/svg%3E");
+      color: var(--white);
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── SCROLLBAR ──────────────────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy-mid); }
+    ::-webkit-scrollbar-thumb { background: var(--navy-border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--gold-dim); }
+
+    /* ── HEADER ─────────────────────────────────────────────────────────── */
+    header {
+      background: linear-gradient(180deg, #0e1e34 0%, var(--navy-mid) 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2.5rem;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.55);
+    }
+
+    /* thin gold pinstripe at very top */
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, var(--gold-dim) 20%, var(--gold) 50%, var(--gold-dim) 80%, transparent 100%);
+    }
+
+    .logo-lockup {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+
+    .logo-text-primary {
+      font-family: 'Playfair Display', 'Crimson Text', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+      letter-spacing: 0.01em;
+    }
+
+    .logo-text-secondary {
+      font-size: 0.62rem;
+      font-weight: 500;
+      color: var(--grey-300);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .header-divider {
+      width: 1px;
+      height: 28px;
+      background: var(--border);
+      margin: 0 0.5rem;
+    }
+
+    .header-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--navy-surface);
+      border: 1px solid var(--border);
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--gold);
+      transition: var(--transition);
+    }
+
+    .status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+      transition: var(--transition);
+    }
+
+    .version-chip {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--grey-300);
+      background: var(--navy-raised);
+      border: 1px solid var(--navy-border);
+      border-radius: 4px;
+      padding: 0.2rem 0.5rem;
+      letter-spacing: 0.04em;
+      font-family: 'Inter', monospace;
+    }
+
+    /* ── LAYOUT ─────────────────────────────────────────────────────────── */
+    main {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 1.75rem 2rem 3rem;
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    /* ── CARD ───────────────────────────────────────────────────────────── */
+    .card {
+      background: linear-gradient(160deg, var(--navy-surface) 0%, var(--navy-mid) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.6rem;
+      box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(201,168,76,0.06);
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow var(--transition);
+    }
+
+    .card:hover { box-shadow: var(--shadow), inset 0 1px 0 rgba(201,168,76,0.08); }
+
+    /* Gold pinstripe at top of every card */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 1.35rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .card-icon {
+      width: 30px; height: 30px;
+      background: linear-gradient(135deg, var(--gold-glow), transparent);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', 'Crimson Text', Georgia, serif;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--gold-light);
+      letter-spacing: 0.015em;
+    }
+
+    .card-subtitle {
+      font-size: 0.7rem;
+      color: var(--grey-300);
+      margin-left: auto;
+      font-style: italic;
+    }
+
+    /* ── UPLOAD PANEL ────────────────────────────────────────────────────── */
+    .upload-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 768px) { .upload-grid { grid-template-columns: 1fr; } }
+
+    .drop-zone {
+      border: 1.5px dashed var(--gold-dim);
+      border-radius: var(--radius);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color var(--transition), background var(--transition);
+      background: var(--navy-mid);
+    }
+
+    .drop-zone:hover, .drop-zone.drag-over {
+      background: var(--gold-glow-sm);
+      border-color: var(--gold);
+      border-style: solid;
+    }
+
+    .drop-zone-icon {
+      width: 48px; height: 48px;
+      margin: 0 auto 0.75rem;
+      background: var(--gold-glow);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: var(--gold);
+    }
+
+    .drop-zone-primary {
+      font-weight: 600;
+      color: var(--grey-100);
+      font-size: 0.9rem;
+    }
+
+    .drop-zone-secondary {
+      color: var(--grey-300);
+      font-size: 0.78rem;
+      margin-top: 0.3rem;
+    }
+
+    #drop-filename {
+      display: inline-block;
+      margin-top: 0.6rem;
+      font-size: 0.78rem;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    #pdf-input { display: none; }
+
+    .input-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--grey-100);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+
+    textarea.contract-text {
+      width: 100%;
+      height: 155px;
+      background: var(--navy-mid);
+      border: 1px solid var(--navy-border);
+      border-radius: var(--radius);
+      color: var(--white);
+      padding: 0.75rem;
+      font-size: 0.82rem;
+      resize: vertical;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.5;
+      transition: border-color var(--transition);
+    }
+
+    textarea.contract-text:focus {
+      outline: none;
+      border-color: var(--gold-dim);
+      background: var(--navy-raised);
+    }
+
+    textarea.contract-text::placeholder { color: var(--grey-300); }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.3rem; }
+
+    input.form-input {
+      width: 100%;
+      background: var(--navy-raised);
+      border: 1px solid var(--navy-border);
+      border-radius: var(--radius);
+      color: var(--white);
+      padding: 0.6rem 0.85rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
+    }
+
+    input.form-input:focus {
+      outline: none;
+      border-color: var(--gold-dim);
+      background: var(--navy-mid);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.08);
+    }
+
+    .options-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 1rem;
+      padding: 0.6rem 0.75rem;
+      background: var(--navy-mid);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      color: var(--grey-200);
+    }
+
+    .options-row input[type="checkbox"] {
+      accent-color: var(--gold);
+      width: 14px; height: 14px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .options-row label { cursor: pointer; }
+
+    .options-note {
+      margin-left: auto;
+      font-size: 0.72rem;
+      color: var(--grey-300);
+      white-space: nowrap;
+    }
+
+    .actions-row {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* ── BUTTONS ─────────────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.55rem 1.25rem;
+      border-radius: var(--radius);
+      font-size: 0.84rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      border: none;
+      transition: opacity var(--transition), transform var(--transition), box-shadow var(--transition);
+      letter-spacing: 0.01em;
+    }
+
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold) 50%, var(--gold-dim) 100%);
+      color: #0a0f1c;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      box-shadow: 0 2px 14px rgba(201,168,76,0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+      text-shadow: 0 1px 0 rgba(255,255,255,0.1);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-bright) 50%, var(--gold) 100%);
+      box-shadow: 0 4px 22px rgba(201,168,76,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--grey-100);
+    }
+
+    .btn-secondary:hover { background: var(--gold-glow-sm); border-color: var(--gold-dim); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--grey-200);
+      padding: 0.4rem 0.6rem;
+    }
+
+    .btn-ghost:hover { color: var(--white); background: var(--gold-glow-sm); }
+
+    /* ── STATUS BAR ──────────────────────────────────────────────────────── */
+    #status-bar {
+      background: var(--navy-surface);
+      border: 1px solid var(--gold-dim);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2.5px solid var(--navy-border);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #status-text {
+      font-size: 0.84rem;
+      color: var(--grey-100);
+    }
+
+    /* ── SUMMARY METRICS ─────────────────────────────────────────────────── */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+      gap: 0.85rem;
+    }
+
+    .metric-card {
+      background: linear-gradient(135deg, var(--navy-raised) 0%, var(--navy-mid) 100%);
+      border: 1px solid var(--border-subtle);
+      border-left: 2px solid var(--gold-dim);
+      border-radius: var(--radius);
+      padding: 1.1rem 1rem 1rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      transition: border-color var(--transition), border-left-color var(--transition), box-shadow var(--transition);
+    }
+
+    .metric-card:hover {
+      border-color: var(--border);
+      border-left-color: var(--gold);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .metric-icon {
+      font-size: 0.75rem;
+      color: var(--grey-300);
+      margin-bottom: 0.15rem;
+    }
+
+    .metric-value {
+      font-family: 'Playfair Display', 'Crimson Text', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--gold-bright);
+    }
+
+    .metric-label {
+      font-size: 0.66rem;
+      font-weight: 600;
+      color: var(--grey-300);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── SECTION PAIR ────────────────────────────────────────────────────── */
+    .section-pair {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 1024px) { .section-pair { grid-template-columns: 1fr; } }
+
+    /* ── CLAUSE TABLE ────────────────────────────────────────────────────── */
+    .table-toolbar {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .search-wrap i {
+      position: absolute;
+      left: 0.65rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--grey-300);
+      font-size: 0.78rem;
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--navy-mid);
+      border: 1px solid var(--navy-border);
+      border-radius: var(--radius-sm);
+      color: var(--white);
+      padding: 0.4rem 0.7rem 0.4rem 2rem;
+      font-size: 0.82rem;
+      font-family: 'Inter', sans-serif;
+      transition: border-color var(--transition);
+    }
+
+    .search-input:focus { outline: none; border-color: var(--gold-dim); }
+
+    .filter-select {
+      background: var(--navy-mid);
+      border: 1px solid var(--navy-border);
+      border-radius: var(--radius-sm);
+      color: var(--grey-100);
+      padding: 0.4rem 0.65rem;
+      font-size: 0.8rem;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: border-color var(--transition);
+    }
+
+    .filter-select:focus { outline: none; border-color: var(--gold-dim); }
+
+    .table-wrap { overflow-x: auto; border-radius: var(--radius-sm); }
+
+    table.clause-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    table.clause-table thead tr {
+      background: var(--navy-mid);
+      border-bottom: 1px solid var(--border);
+    }
+
+    table.clause-table th {
+      padding: 0.55rem 0.7rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.68rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    table.clause-table th:hover { color: var(--gold-bright); }
+
+    table.clause-table th .sort-icon { font-size: 0.6rem; margin-left: 3px; color: var(--grey-300); }
+
+    table.clause-table td {
+      padding: 0.5rem 0.7rem;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--grey-100);
+      vertical-align: middle;
+    }
+
+    table.clause-table tbody tr { transition: background var(--transition); }
+    table.clause-table tbody tr:hover td { background: var(--gold-glow-sm); }
+    table.clause-table tbody tr:last-child td { border-bottom: none; }
+
+    .clause-preview {
+      max-width: 260px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+      color: var(--white);
+      transition: color var(--transition);
+    }
+
+    .clause-preview:hover { color: var(--gold-bright); }
+
+    .type-chip {
+      display: inline-block;
+      background: var(--gold-glow);
+      border: 1px solid var(--border-subtle);
+      color: var(--gold-bright);
+      padding: 0.1rem 0.45rem;
+      border-radius: 4px;
+      font-size: 0.68rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .risk-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .risk-badge.anomalous  { background: var(--red-dim);   color: var(--red); }
+    .risk-badge.normal     { background: var(--green-dim); color: var(--green); }
+    .risk-badge.high       { background: var(--red-dim);   color: var(--red); }
+    .risk-badge.medium     { background: var(--amber-dim); color: var(--amber); }
+    .risk-badge.balanced   { background: var(--green-dim); color: var(--green); }
+
+    .score-num {
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+    }
+
+    /* ── GAUGE ───────────────────────────────────────────────────────────── */
+    .gauge-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    #gauge-canvas { max-width: 300px; }
+
+    .gauge-party-row {
+      width: 100%;
+      max-width: 300px;
+      display: flex;
+      justify-content: space-between;
+      margin-top: -0.5rem;
+    }
+
+    .gauge-party-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .gauge-reading {
+      font-family: 'Playfair Display', 'Crimson Text', Georgia, serif;
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .gauge-verdict {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--grey-200);
+    }
+
+    /* ── CHART AREA ──────────────────────────────────────────────────────── */
+    .chart-area { position: relative; height: 380px; }
+
+    /* ── SHAP PANEL ──────────────────────────────────────────────────────── */
+    .shap-image-wrap {
+      background: var(--navy-mid);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      text-align: center;
+      min-height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .shap-image-wrap img { max-width: 100%; border-radius: var(--radius-sm); }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 2.5rem 1rem;
+      color: var(--grey-300);
+    }
+
+    .empty-state-icon {
+      width: 52px; height: 52px;
+      background: var(--navy-raised);
+      border: 1px solid var(--navy-border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--grey-400);
+    }
+
+    .empty-state p { font-size: 0.82rem; }
+
+    /* ── MODAL ───────────────────────────────────────────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 12, 25, 0.82);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    .modal-overlay.active { display: flex; align-items: flex-start; justify-content: center; }
+
+    .modal {
+      background: var(--navy-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 0;
+      max-width: 680px;
+      width: 100%;
+      margin: auto;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      background: var(--navy-raised);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-title {
+      font-family: 'Playfair Display', 'Crimson Text', Georgia, serif;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--gold-bright);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--grey-300);
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 0.3rem;
+      border-radius: var(--radius-sm);
+      transition: color var(--transition), background var(--transition);
+    }
+
+    .modal-close:hover { color: var(--white); background: var(--gold-glow-sm); }
+
+    .modal-body { padding: 1.5rem; }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .detail-item {
+      background: var(--navy-raised);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.6rem 0.75rem;
+    }
+
+    .detail-item label {
+      font-size: 0.66rem;
+      font-weight: 600;
+      color: var(--grey-300);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .detail-item p {
+      font-size: 0.88rem;
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    .score-bar-wrap { margin: 0.45rem 0; }
+
+    .score-bar-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--grey-200);
+      margin-bottom: 4px;
+    }
+
+    .score-bar-track {
+      height: 5px;
+      background: var(--navy-raised);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .clause-text-box {
+      background: var(--navy-mid);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--grey-100);
+      max-height: 180px;
+      overflow-y: auto;
+      line-height: 1.65;
+    }
+
+    /* ── DIVIDER ─────────────────────────────────────────────────────────── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border-subtle);
+      margin: 1rem 0;
+    }
+
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--grey-300);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── TOAST ───────────────────────────────────────────────────────────── */
+    #toast-container {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .toast {
+      background: var(--navy-raised);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.7rem 1rem;
+      min-width: 220px;
+      max-width: 320px;
+      font-size: 0.82rem;
+      box-shadow: var(--shadow);
+      animation: toastIn 0.25s ease forwards;
+    }
+
+    .toast.error   { border-color: var(--red); }
+    .toast.success { border-color: var(--green); }
+
+    @keyframes toastIn {
+      from { transform: translateX(110%); opacity: 0; }
+      to   { transform: translateX(0);   opacity: 1; }
+    }
+
+    /* ── EXPORT ROW ──────────────────────────────────────────────────────── */
+    .export-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 600px) { .export-cards { grid-template-columns: 1fr; } }
+
+    .export-card {
+      background: var(--navy-raised);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      transition: border-color var(--transition);
+    }
+
+    .export-card:hover { border-color: var(--border); }
+
+    .export-card-icon {
+      width: 36px; height: 36px;
+      background: var(--gold-glow);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .export-card-text { flex: 1; }
+    .export-card-title { font-weight: 600; font-size: 0.88rem; color: var(--white); }
+    .export-card-desc  { font-size: 0.72rem; color: var(--grey-300); margin-top: 0.1rem; }
+
+    /* ── CONFIDENTIAL BANNER ────────────────────────────────────────────── */
+    .confidential-banner {
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.06), transparent);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      text-align: center;
+      padding: 0.3rem 2rem;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+    }
+
+    /* ── FOOTER ──────────────────────────────────────────────────────────── */
+    footer {
+      margin-top: 3rem;
+      border-top: 1px solid var(--border-subtle);
+      background: var(--navy-mid);
+    }
+
+    .footer-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 2rem 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    @media (max-width: 640px) { .footer-inner { grid-template-columns: 1fr; } }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .footer-brand-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.02em;
+    }
+
+    .footer-disclaimer {
+      font-size: 0.7rem;
+      color: var(--grey-300);
+      line-height: 1.7;
+      max-width: 560px;
+    }
+
+    .footer-disclaimer strong { color: var(--grey-200); }
+
+    .footer-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.4rem;
+      font-size: 0.68rem;
+      color: var(--grey-300);
+      text-align: right;
+    }
+
+    .footer-meta .footer-model {
+      background: var(--navy-raised);
+      border: 1px solid var(--navy-border);
+      border-radius: 4px;
+      padding: 0.2rem 0.55rem;
+      font-family: 'Inter', monospace;
+      letter-spacing: 0.04em;
+      color: var(--grey-200);
+    }
+
+    .footer-divider {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+      border: none;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .footer-copy {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0.8rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.66rem;
+      color: var(--grey-400);
+    }
+
+    /* ── UTILITIES ───────────────────────────────────────────────────────── */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- HEADER                                                                 -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<div class="confidential-banner">Privileged &amp; Confidential — Attorney Work Product — For Authorised Use Only</div>
+
+<header>
+
+  <a class="logo-lockup" href="#">
+    <!-- Inline SVG justice scales logo -->
+    <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Background circle -->
+      <circle cx="24" cy="24" r="22" fill="#0A1628" stroke="#C9A84C" stroke-width="1.25"/>
+      <!-- Central post -->
+      <line x1="24" y1="9" x2="24" y2="39" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
+      <!-- Base -->
+      <line x1="15" y1="39" x2="33" y2="39" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
+      <!-- Crossbeam -->
+      <line x1="24" y1="15" x2="12" y2="22" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="24" y1="15" x2="36" y2="22" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Top pivot dot -->
+      <circle cx="24" cy="14.5" r="1.8" fill="#C9A84C"/>
+      <!-- Left pan -->
+      <path d="M8 26 Q12 30 16 26" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      <line x1="8" y1="26" x2="16" y2="26" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Right pan -->
+      <path d="M32 26 Q36 30 40 26" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      <line x1="32" y1="26" x2="40" y2="26" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+
+    <div class="logo-text">
+      <span class="logo-text-primary">Contract Intelligence</span>
+      <span class="logo-text-secondary">Power Imbalance Platform</span>
+    </div>
+  </a>
+
+  <div class="header-divider"></div>
+
+  <div class="header-right">
+    <div class="status-pill" id="status-pill">
+      <div class="status-dot" id="status-dot"></div>
+      <span id="status-badge">Ready</span>
+    </div>
+    <span class="version-chip" id="api-version">v{{ api_version }}</span>
+  </div>
+
+</header>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- CLAUSE DETAIL MODAL                                                    -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="clause-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">
+        <i class="fa fa-file-lines"></i> Clause Detail
+      </div>
+      <button class="modal-close" onclick="closeModal()" title="Close">
+        <i class="fa fa-xmark"></i>
+      </button>
+    </div>
+    <div class="modal-body" id="modal-content"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- MAIN                                                                    -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<main>
+
+  <!-- ── SECTION 1: UPLOAD ─────────────────────────────────────────────── -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon"><i class="fa fa-arrow-up-from-bracket"></i></div>
+      <span class="card-title">Contract Upload</span>
+      <span class="card-subtitle">PDF or plain text · max 100 pages</span>
+    </div>
+
+    <div class="upload-grid">
+
+      <!-- PDF Drop Zone -->
+      <div>
+        <label class="input-label">PDF Document</label>
+        <div class="drop-zone" id="drop-zone" onclick="document.getElementById('pdf-input').click()">
+          <div class="drop-zone-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="#c9a84c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="14 2 14 8 20 8" stroke="#c9a84c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="6" y="18" font-family="Inter,sans-serif" font-size="5" font-weight="700" fill="#c9a84c" letter-spacing="0.3">PDF</text>
+            </svg>
+          </div>
+          <div class="drop-zone-primary">Drop PDF here or click to browse</div>
+          <div class="drop-zone-secondary">Supports contracts up to 100 pages</div>
+          <span id="drop-filename"></span>
+        </div>
+        <input type="file" id="pdf-input" accept=".pdf" onchange="handleFileSelect(this)" />
+      </div>
+
+      <!-- Raw Text -->
+      <div>
+        <label class="input-label" for="contract-text">Or paste contract text</label>
+        <textarea class="contract-text" id="contract-text"
+          placeholder="Paste the full contract text here..."></textarea>
+      </div>
+    </div>
+
+    <!-- Party Names -->
+    <div class="form-row">
+      <div class="form-group">
+        <label class="input-label" for="party-a">Party A — Counterparty</label>
+        <input class="form-input" id="party-a" type="text" placeholder="e.g. Acme Corp" value="Party A" />
+      </div>
+      <div class="form-group">
+        <label class="input-label" for="party-b">Party B — Other Party</label>
+        <input class="form-input" id="party-b" type="text" placeholder="e.g. Client Ltd" value="Party B" />
+      </div>
+    </div>
+
+    <!-- SHAP Option -->
+    <div class="options-row">
+      <input type="checkbox" id="run-shap" />
+      <label for="run-shap">Generate SHAP token-level explanations</label>
+      <span class="options-note"><i class="fa fa-triangle-exclamation"></i> Slow — adds 5–20 min total to the analysis.</span>
+    </div>
+
+    <div class="actions-row">
+      <button class="btn btn-primary" id="analyse-btn" onclick="submitContract()">
+        <i class="fa fa-magnifying-glass"></i> Analyse Contract
+      </button>
+      <button class="btn btn-secondary" onclick="resetAll()">
+        <i class="fa fa-rotate-left"></i> Reset
+      </button>
+    </div>
+  </div>
+
+  <!-- ── STATUS BAR ─────────────────────────────────────────────────────── -->
+  <div id="status-bar" class="card hidden">
+    <div class="spinner"></div>
+    <span id="status-text">Analysing contract — this may take 30–90 seconds...</span>
+  </div>
+
+  <!-- ── SECTION 2: SUMMARY METRICS ────────────────────────────────────── -->
+  <div class="card hidden" id="summary-section">
+    <div class="card-header">
+      <div class="card-icon"><i class="fa fa-chart-simple"></i></div>
+      <span class="card-title">Analysis Summary</span>
+    </div>
+    <div class="metrics-row" id="metrics-row"></div>
+  </div>
+
+  <!-- ── SECTIONS 3 + 4: TABLE + CHART ─────────────────────────────────── -->
+  <div class="section-pair hidden" id="results-pair">
+
+    <!-- Clause Table -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon"><i class="fa fa-table-list"></i></div>
+        <span class="card-title">Clause Breakdown</span>
+      </div>
+
+      <div class="table-toolbar">
+        <div class="search-wrap">
+          <i class="fa fa-magnifying-glass"></i>
+          <input class="search-input" type="text" id="clause-search"
+            placeholder="Search clauses or types..." oninput="filterTable()" />
+        </div>
+        <select class="filter-select" id="anomaly-filter" onchange="filterTable()">
+          <option value="">All anomaly</option>
+          <option value="yes">Anomalous only</option>
+          <option value="no">Normal only</option>
+        </select>
+        <select class="filter-select" id="imbalance-filter" onchange="filterTable()">
+          <option value="">All imbalance</option>
+          <option value="HIGH">High</option>
+          <option value="MEDIUM">Medium</option>
+          <option value="BALANCED">Balanced</option>
+        </select>
+      </div>
+
+      <div class="table-wrap">
+        <table class="clause-table" id="clause-table">
+          <thead>
+            <tr>
+              <th onclick="sortTable('idx')"># <span class="sort-icon">↕</span></th>
+              <th onclick="sortTable('type')">Type <span class="sort-icon">↕</span></th>
+              <th onclick="sortTable('anomaly')">Score <span class="sort-icon">↕</span></th>
+              <th>Anomaly</th>
+              <th onclick="sortTable('imbalance')">Imbalance <span class="sort-icon">↕</span></th>
+              <th>Level</th>
+              <th>Text Preview</th>
+            </tr>
+          </thead>
+          <tbody id="clause-tbody">
+            <tr>
+              <td colspan="7">
+                <div class="empty-state">
+                  <div class="empty-state-icon"><i class="fa fa-file-contract"></i></div>
+                  <p>Upload a contract to begin analysis</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Power Imbalance Chart -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon"><i class="fa fa-scale-balanced"></i></div>
+        <span class="card-title">Power Imbalance by Clause Type</span>
+      </div>
+      <div class="chart-area">
+        <canvas id="imbalance-chart"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── SECTION 4b: GAUGE ──────────────────────────────────────────────── -->
+  <div class="card hidden" id="gauge-section">
+    <div class="card-header">
+      <div class="card-icon"><i class="fa fa-gauge-high"></i></div>
+      <span class="card-title">Overall Power Imbalance Index</span>
+    </div>
+    <div class="gauge-container">
+      <canvas id="gauge-canvas" width="320" height="190"></canvas>
+      <div class="gauge-party-row" id="gauge-party-row">
+        <span class="gauge-party-label" id="gauge-party-b"></span>
+        <span class="gauge-party-label" id="gauge-party-a"></span>
+      </div>
+      <div class="gauge-reading" id="gauge-label"></div>
+      <div class="gauge-verdict" id="gauge-sublabel"></div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 5: SHAP ────────────────────────────────────────────────── -->
+  <div class="card hidden" id="shap-section">
+    <div class="card-header">
+      <div class="card-icon"><i class="fa fa-wand-sparkles"></i></div>
+      <span class="card-title">SHAP Token-Level Explanation</span>
+      <span class="card-subtitle">Token attribution — positive values favour Party A</span>
+    </div>
+    <div style="margin-bottom:1rem;">
+      <select class="filter-select" id="shap-clause-select" onchange="loadSHAP()"
+        style="width:100%;max-width:420px;">
+        <option value="">Select a clause to inspect...</option>
+      </select>
+    </div>
+    <div class="shap-image-wrap" id="shap-display">
+      <div class="empty-state">
+        <div class="empty-state-icon"><i class="fa fa-image"></i></div>
+        <p>Select a clause above to view its SHAP explanation</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 6: EXPORT ─────────────────────────────────────────────── -->
+  <div class="card hidden" id="export-section">
+    <div class="card-header">
+      <div class="card-icon"><i class="fa fa-download"></i></div>
+      <span class="card-title">Export Analysis</span>
+    </div>
+    <div class="export-cards">
+
+      <div class="export-card">
+        <div class="export-card-icon"><i class="fa fa-file-pdf"></i></div>
+        <div class="export-card-text">
+          <div class="export-card-title">Legal PDF Report</div>
+          <div class="export-card-desc">Formatted for counsel review — full clause breakdown, scores, findings</div>
+        </div>
+        <button class="btn btn-primary" onclick="downloadReport()" style="flex-shrink:0;">
+          <i class="fa fa-download"></i> Download
+        </button>
+      </div>
+
+      <div class="export-card">
+        <div class="export-card-icon"><i class="fa fa-code"></i></div>
+        <div class="export-card-text">
+          <div class="export-card-title">JSON Data Export</div>
+          <div class="export-card-desc">Full structured analysis data for integration or further processing</div>
+        </div>
+        <button class="btn btn-secondary" onclick="downloadJSON()" style="flex-shrink:0;">
+          <i class="fa fa-download"></i> Export
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- FOOTER                                                                  -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-brand-name">Contract Intelligence Platform</div>
+      <p class="footer-disclaimer">
+        <strong>Legal Disclaimer.</strong> This platform uses machine learning models to assist in
+        contract review. Output is provided for informational purposes only and does not constitute
+        legal advice. All analysis should be reviewed and verified by qualified legal counsel prior
+        to reliance. Clause classifications, anomaly flags, and power imbalance scores are
+        probabilistic estimates and may contain errors.
+      </p>
+    </div>
+    <div class="footer-meta">
+      <span class="footer-model">ensemble_legalbert_legalroberta</span>
+      <span>F1 Macro 0.6058 &middot; 100 clause types</span>
+      <span>LegalBERT + Legal-RoBERTa-large</span>
+    </div>
+  </div>
+  <hr class="footer-divider" />
+  <div class="footer-copy">
+    <span>Contract Intelligence &amp; Power Imbalance Platform</span>
+    <span>Built by <a href="https://skmmt.rootexception.com/" target="_blank" rel="noopener" style="color:var(--gold-dim);text-decoration:none;letter-spacing:0.04em;font-weight:600;transition:color 0.18s ease;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gold-dim)'">SKMMT</a> &mdash; Research prototype &mdash; not for production legal use</span>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- JAVASCRIPT — Application Logic                                         -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<script>
+  /* ── STATE ──────────────────────────────────────────────────────────── */
+  let state = {
+    contractId:     null,
+    analysisData:   null,
+    clauses:        [],
+    sortKey:        'idx',
+    sortAsc:        true,
+    imbalanceChart: null,
+  };
+
+  /* ── FILE DRAG-DROP ──────────────────────────────────────────────────── */
+  const dropZone = document.getElementById('drop-zone');
+
+  dropZone.addEventListener('dragover', e => {
+    e.preventDefault();
+    dropZone.classList.add('drag-over');
+  });
+
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type === 'application/pdf') {
+      document.getElementById('drop-filename').textContent = '\u2022 ' + file.name;
+      window._selectedFile = file;
+    } else {
+      showToast('Only PDF files are accepted.', 'error');
+    }
+  });
+
+  function handleFileSelect(input) {
+    const file = input.files[0];
+    if (file) {
+      document.getElementById('drop-filename').textContent = '\u2022 ' + file.name;
+      window._selectedFile = file;
+    }
+  }
+
+  /* ── SUBMIT ──────────────────────────────────────────────────────────── */
+  async function submitContract() {
+    const partyA  = document.getElementById('party-a').value.trim() || 'Party A';
+    const partyB  = document.getElementById('party-b').value.trim() || 'Party B';
+    const runShap = document.getElementById('run-shap').checked;
+    const rawText = document.getElementById('contract-text').value.trim();
+    const file    = window._selectedFile;
+
+    if (!file && !rawText) {
+      showToast('Please upload a PDF or paste contract text.', 'error');
+      return;
+    }
+
+    document.getElementById('analyse-btn').disabled = true;
+    showStatus('Analysing contract \u2014 this may take 30\u201390 seconds...');
+    setStatusBadge('Analysing', '#C87D35', '#C87D35');
+
+    const formData = new FormData();
+    if (file) formData.append('file', file);
+    else       formData.append('text', rawText);
+    formData.append('party_a', partyA);
+    formData.append('party_b', partyB);
+    formData.append('run_shap', runShap ? 'true' : 'false');
+
+    try {
+      const resp = await fetch('/analyse', { method: 'POST', body: formData });
+      if (!resp.ok) {
+        const err = await resp.json();
+        throw new Error(err.detail || 'Analysis failed');
+      }
+      const data = await resp.json();
+      state.contractId   = data.contract_id;
+      state.analysisData = data;
+      state.clauses      = data.clauses || [];
+
+      renderAll(data);
+      hideStatus();
+      setStatusBadge('Complete', '#3A8C62', '#3A8C62');
+      showToast('Analysis complete.', 'success');
+    } catch (err) {
+      hideStatus();
+      setStatusBadge('Error', '#B94040', '#B94040');
+      showToast('Error: ' + err.message, 'error');
+    } finally {
+      document.getElementById('analyse-btn').disabled = false;
+    }
+  }
+
+  /* ── RENDER ALL ──────────────────────────────────────────────────────── */
+  function renderAll(data) {
+    renderSummary(data);
+    renderClauseTable(data.clauses);
+    renderImbalanceChart(data.imbalance);
+    renderGauge(
+      data.imbalance.overall_imbalance_index,
+      data.imbalance.party_a_name,
+      data.imbalance.party_b_name
+    );
+    renderSHAPSelect(data.clauses);
+
+    show('summary-section');
+    show('results-pair');
+    show('gauge-section');
+    show('shap-section');
+    show('export-section');
+  }
+
+  /* ── SUMMARY METRICS ─────────────────────────────────────────────────── */
+  function renderSummary(data) {
+    const s   = data.summary;
+    const pct = s.total_clauses > 0 ? ((s.anomalous_clauses / s.total_clauses) * 100).toFixed(0) : 0;
+    const idx = s.overall_imbalance_index;
+    const idxColor = Math.abs(idx) > 40 ? 'var(--red)' : (Math.abs(idx) > 20 ? 'var(--amber)' : 'var(--green)');
+
+    document.getElementById('metrics-row').innerHTML =
+      metric(s.total_clauses,            'fa-file-lines',    'Total Clauses',       'var(--gold-bright)') +
+      metric(s.anomalous_clauses,        'fa-triangle-exclamation', 'Anomalous',    s.anomalous_clauses > 0 ? 'var(--red)' : 'var(--green)') +
+      metric(pct + '%',                  'fa-percent',       'Anomaly Rate',        s.anomalous_clauses > 0 ? 'var(--amber)' : 'var(--green)') +
+      metric((idx > 0 ? '+' : '') + idx.toFixed(1), 'fa-scale-unbalanced', 'Imbalance Index', idxColor) +
+      metric(s.dominant_party,           'fa-user-tie',      'Dominant Party',      'var(--gold-bright)') +
+      metric(s.dominant_clause_type || '\u2014', 'fa-tag', 'Top Clause Type',      'var(--grey-100)');
+  }
+
+  function metric(val, icon, label, color) {
+    const size = String(val).length > 12 ? '1.2rem' : String(val).length > 8 ? '1.5rem' : '2rem';
+    return `
+      <div class="metric-card">
+        <div class="metric-icon"><i class="fa ${icon}"></i></div>
+        <div class="metric-value" style="color:${color};font-size:${size};">${val}</div>
+        <div class="metric-label">${label}</div>
+      </div>`;
+  }
+
+  /* ── CLAUSE TABLE ────────────────────────────────────────────────────── */
+  function renderClauseTable(clauses) {
+    state.clauses = clauses || [];
+    _renderRows();
+    _populateSHAPSelect(clauses);
+  }
+
+  function _renderRows() {
+    const search  = (document.getElementById('clause-search').value || '').toLowerCase();
+    const aFilter = document.getElementById('anomaly-filter').value;
+    const iFilter = document.getElementById('imbalance-filter').value;
+
+    let rows = state.clauses.map((c, i) => ({ ...c, _idx: i + 1 }));
+
+    rows = rows.filter(c => {
+      const matchText = !search || c.clause_text.toLowerCase().includes(search) ||
+                        (c.clause_types || []).join(' ').toLowerCase().includes(search);
+      const matchAnom = !aFilter || (aFilter === 'yes' ? c.is_anomalous : !c.is_anomalous);
+      const matchImb  = !iFilter || (c.imbalance_label && c.imbalance_label.includes(iFilter));
+      return matchText && matchAnom && matchImb;
+    });
+
+    rows.sort((a, b) => {
+      let va, vb;
+      if      (state.sortKey === 'idx')       { va = a._idx;                      vb = b._idx; }
+      else if (state.sortKey === 'type')      { va = (a.clause_types||[])[0]||''; vb = (b.clause_types||[])[0]||''; }
+      else if (state.sortKey === 'anomaly')   { va = a.anomaly_score ?? -1;       vb = b.anomaly_score ?? -1; }
+      else if (state.sortKey === 'imbalance') { va = a.power_imbalance_score ?? 0; vb = b.power_imbalance_score ?? 0; }
+      if (va < vb) return state.sortAsc ? -1 : 1;
+      if (va > vb) return state.sortAsc ?  1 : -1;
+      return 0;
+    });
+
+    const tbody = document.getElementById('clause-tbody');
+
+    if (rows.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7">
+        <div class="empty-state">
+          <div class="empty-state-icon"><i class="fa fa-filter"></i></div>
+          <p>No clauses match your filters</p>
+        </div>
+      </td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = rows.map(c => {
+      const types  = (c.clause_types || []).slice(0, 2).map(t =>
+        `<span class="type-chip">${escHtml(t)}</span>`).join(' ') ||
+        '<span style="color:var(--grey-300)">Unclassified</span>';
+
+      const aScore = c.anomaly_score !== null && c.anomaly_score !== undefined
+        ? `<span class="score-num">${c.anomaly_score.toFixed(1)}</span>` : '—';
+
+      const aFlag  = c.is_anomalous
+        ? `<span class="risk-badge anomalous"><i class="fa fa-triangle-exclamation"></i> Yes</span>`
+        : `<span class="risk-badge normal"><i class="fa fa-check"></i> No</span>`;
+
+      const imb    = c.power_imbalance_score !== null && c.power_imbalance_score !== undefined
+        ? `<span class="score-num">${c.power_imbalance_score > 0 ? '+' : ''}${c.power_imbalance_score.toFixed(1)}</span>`
+        : '—';
+
+      const lbl    = c.imbalance_label
+        ? `<span class="risk-badge ${c.imbalance_label.toLowerCase().split(' ')[0]}">${c.imbalance_label}</span>`
+        : '—';
+
+      return `<tr>
+        <td style="color:var(--grey-300);font-size:0.72rem;">${c._idx}</td>
+        <td>${types}</td>
+        <td>${aScore}</td>
+        <td>${aFlag}</td>
+        <td>${imb}</td>
+        <td>${lbl}</td>
+        <td>
+          <span class="clause-preview" title="${escHtml(c.clause_text)}"
+            onclick="openClauseModal(${state.clauses.indexOf(c)})">
+            ${escHtml(c.clause_text.substring(0, 72))}${c.clause_text.length > 72 ? '\u2026' : ''}
+          </span>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  function filterTable() { _renderRows(); }
+
+  function sortTable(key) {
+    if (state.sortKey === key) state.sortAsc = !state.sortAsc;
+    else { state.sortKey = key; state.sortAsc = true; }
+    _renderRows();
+  }
+
+  /* ── POWER IMBALANCE CHART ───────────────────────────────────────────── */
+  function renderImbalanceChart(imbalanceData) {
+    if (state.imbalanceChart) state.imbalanceChart.destroy();
+
+    const byType = imbalanceData.imbalance_by_type || [];
+    const labels = byType.map(t => t.clause_type);
+    const values = byType.map(t => t.imbalance_score);
+    const colors = values.map(v =>
+      v >  40 ? '#B94040' :
+      v < -40 ? '#2F6EA0' :
+      v >  20 ? '#C87D35' : '#3A8C62'
+    );
+
+    const ctx = document.getElementById('imbalance-chart').getContext('2d');
+    state.imbalanceChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Power Imbalance Score',
+          data: values,
+          backgroundColor: colors,
+          borderWidth: 0,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 600, easing: 'easeOutCubic' },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#152540',
+            borderColor: 'rgba(201,168,76,0.3)',
+            borderWidth: 1,
+            titleColor: '#C9A84C',
+            bodyColor: '#D8D4CC',
+            padding: 10,
+            callbacks: {
+              label: ctx => {
+                const v = ctx.raw;
+                const dir = v > 0 ? imbalanceData.party_a_name + ' advantage' : imbalanceData.party_b_name + ' advantage';
+                return ` ${v > 0 ? '+' : ''}${v.toFixed(1)} \u2014 ${dir}`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            min: -100, max: 100,
+            grid: { color: 'rgba(201,168,76,0.07)' },
+            border: { color: 'rgba(201,168,76,0.15)' },
+            ticks: { color: '#A8A49C', font: { size: 10, family: 'Inter' } },
+          },
+          y: {
+            grid: { display: false },
+            ticks: { color: '#E2C06A', font: { size: 9, family: 'Inter' } },
+          }
+        }
+      }
+    });
+  }
+
+  /* ── GAUGE ───────────────────────────────────────────────────────────── */
+  function renderGauge(value, partyA, partyB) {
+    const canvas = document.getElementById('gauge-canvas');
+    const ctx    = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+
+    ctx.clearRect(0, 0, W, H);
+
+    const cx = W / 2, cy = H - 16;
+    const r  = Math.min(W * 0.42, (H - 16) * 0.88);
+
+    // Track arc
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, Math.PI, 0);
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth   = 18;
+    ctx.stroke();
+
+    // Coloured arc
+    const frac     = (value + 100) / 200;
+    const endAngle = Math.PI + frac * Math.PI;
+
+    const grad = ctx.createLinearGradient(cx - r, cy, cx + r, cy);
+    grad.addColorStop(0,    '#2F6EA0');
+    grad.addColorStop(0.45, '#3A8C62');
+    grad.addColorStop(0.55, '#3A8C62');
+    grad.addColorStop(1,    '#B94040');
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, Math.PI, endAngle);
+    ctx.strokeStyle = grad;
+    ctx.lineWidth   = 18;
+    ctx.lineCap     = 'round';
+    ctx.stroke();
+
+    // Tick marks + scale labels at key positions
+    const scaleTicks = [
+      { i: 0,  label: '−100' },
+      { i: 2,  label: '−60'  },
+      { i: 5,  label: '0',   major: true },
+      { i: 8,  label: '+60'  },
+      { i: 10, label: '+100' },
+    ];
+    for (let i = 0; i <= 10; i++) {
+      const ang   = Math.PI + (i / 10) * Math.PI;
+      const major = i % 5 === 0;
+      const x1 = cx + (r - (major ? 24 : 14)) * Math.cos(ang);
+      const y1 = cy + (r - (major ? 24 : 14)) * Math.sin(ang);
+      const x2 = cx + (r - 8) * Math.cos(ang);
+      const y2 = cy + (r - 8) * Math.sin(ang);
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.strokeStyle = major ? 'rgba(201,168,76,0.7)' : 'rgba(201,168,76,0.2)';
+      ctx.lineWidth   = major ? 2 : 1;
+      ctx.stroke();
+    }
+    // Scale labels at −100, 0, +100
+    ctx.font      = 'bold 9px Inter, system-ui';
+    ctx.fillStyle = 'rgba(201,168,76,0.75)';
+    [
+      { frac: 0,   text: '−100', align: 'left'   },
+      { frac: 0.5, text:  '0',   align: 'center' },
+      { frac: 1,   text: '+100', align: 'right'  },
+    ].forEach(({ frac: f, text, align }) => {
+      const ang = Math.PI + f * Math.PI;
+      const lx  = cx + (r - 36) * Math.cos(ang);
+      const ly  = cy + (r - 36) * Math.sin(ang);
+      ctx.textAlign = align;
+      ctx.fillText(text, lx, ly);
+    });
+
+    // Needle
+    const needleAng = Math.PI + frac * Math.PI;
+    const nx = cx + (r - 22) * Math.cos(needleAng);
+    const ny = cy + (r - 22) * Math.sin(needleAng);
+
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(nx, ny);
+    ctx.strokeStyle = '#C9A84C';
+    ctx.lineWidth   = 2.5;
+    ctx.lineCap     = 'round';
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+    ctx.fillStyle = '#C9A84C';
+    ctx.fill();
+
+    // Party labels rendered as HTML elements (avoid canvas edge clipping)
+    document.getElementById('gauge-party-b').textContent = partyB;
+    document.getElementById('gauge-party-a').textContent = partyA;
+
+    // Reading and verdict
+    const color    = value > 40 ? '#B94040' : value < -40 ? '#2F6EA0' : '#3A8C62';
+    const verdict  = Math.abs(value) > 40 ? 'High Imbalance' :
+                     Math.abs(value) > 20 ? 'Moderate Imbalance' : 'Broadly Balanced';
+
+    document.getElementById('gauge-label').textContent = (value > 0 ? '+' : '') + value.toFixed(1);
+    document.getElementById('gauge-label').style.color = color;
+    document.getElementById('gauge-sublabel').textContent = verdict;
+  }
+
+  /* ── SHAP ────────────────────────────────────────────────────────────── */
+  function _populateSHAPSelect() {}
+
+  function renderSHAPSelect(clauses) {
+    const sel = document.getElementById('shap-clause-select');
+    sel.innerHTML = '<option value="">Select a clause to inspect...</option>';
+    clauses.forEach((c, i) => {
+      const type = (c.clause_types || []).slice(0, 1).join('') || 'Unclassified';
+      const opt  = document.createElement('option');
+      opt.value  = i;
+      opt.textContent = `Clause ${i + 1}: ${type.substring(0, 42)}`;
+      sel.appendChild(opt);
+    });
+  }
+
+  function loadSHAP() {
+    const idx     = document.getElementById('shap-clause-select').value;
+    const display = document.getElementById('shap-display');
+
+    if (idx === '' || !state.clauses[idx]) {
+      display.innerHTML = `<div class="empty-state">
+        <div class="empty-state-icon"><i class="fa fa-image"></i></div>
+        <p>Select a clause above to view its SHAP explanation</p>
+      </div>`;
+      return;
+    }
+
+    const clause = state.clauses[idx];
+
+    if (clause.shap_plot_path) {
+      const imgSrc = '/shap/' + clause.shap_plot_path.split('/').pop();
+      display.innerHTML = `<img src="${imgSrc}" alt="SHAP attribution plot"
+        onerror="this.parentNode.innerHTML='<div class=empty-state><div class=empty-state-icon><i class=fa fa-triangle-exclamation></i></div><p>SHAP plot not yet generated. Enable SHAP on next analysis.</p></div>'" />`;
+    } else {
+      display.innerHTML = `<div class="empty-state">
+        <div class="empty-state-icon"><i class="fa fa-clock"></i></div>
+        <p>SHAP not generated for this clause.<br/>Re-run analysis with SHAP enabled.</p>
+      </div>`;
+    }
+  }
+
+  /* ── CLAUSE DETAIL MODAL ─────────────────────────────────────────────── */
+  function openClauseModal(idx) {
+    const c = state.clauses[idx];
+    if (!c) return;
+
+    const imb   = c.power_imbalance_score;
+    const types = (c.clause_types || []).join(', ') || 'Unclassified';
+    const color = imb > 40 ? 'var(--red)' : imb < -40 ? 'var(--blue)' : 'var(--green)';
+
+    document.getElementById('modal-content').innerHTML = `
+      <div class="detail-grid">
+        <div class="detail-item"><label>Clause ID</label><p>${escHtml(c.clause_id.substring(0, 12))}&hellip;</p></div>
+        <div class="detail-item"><label>Contract</label><p>${escHtml(String(c.contract_id))}</p></div>
+        <div class="detail-item"><label>Clause Types</label><p>${escHtml(types)}</p></div>
+        <div class="detail-item"><label>Anomaly Score</label><p>${c.anomaly_score !== null ? c.anomaly_score.toFixed(1) + ' / 100' : 'N/A'}</p></div>
+        <div class="detail-item"><label>Imbalance Score</label><p style="color:${color}">${imb !== null ? (imb > 0 ? '+' : '') + imb.toFixed(1) : 'N/A'}</p></div>
+        <div class="detail-item"><label>Imbalance Level</label><p>${escHtml(c.imbalance_label || 'N/A')}</p></div>
+      </div>
+
+      <hr class="divider" />
+      <div class="section-label">Power Feature Scores</div>
+      ${scoreBar('Sentiment Tone',  c.sentiment_score,     'var(--blue)')}
+      ${scoreBar('Modal Verbs',     c.modal_score,         'var(--amber)')}
+      ${scoreBar('Obligations',     c.obligation_score,    'var(--red)')}
+      ${scoreBar('Assertiveness',   c.assertiveness_score, 'var(--gold)')}
+
+      <hr class="divider" />
+      <div class="section-label">Clause Text</div>
+      <div class="clause-text-box">${escHtml(c.clause_text)}</div>
+    `;
+
+    document.getElementById('clause-modal').classList.add('active');
+  }
+
+  function closeModal() {
+    document.getElementById('clause-modal').classList.remove('active');
+  }
+
+  document.getElementById('clause-modal').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeModal();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  function scoreBar(label, val, color) {
+    if (val === null || val === undefined) return '';
+    const pct = Math.round(val * 100);
+    return `
+      <div class="score-bar-wrap">
+        <div class="score-bar-header"><span>${label}</span><span>${val.toFixed(3)}</span></div>
+        <div class="score-bar-track">
+          <div class="score-bar-fill" style="width:${pct}%; background:${color};"></div>
+        </div>
+      </div>`;
+  }
+
+  /* ── EXPORT ──────────────────────────────────────────────────────────── */
+  function downloadReport() {
+    if (!state.contractId) { showToast('No analysis to export.', 'error'); return; }
+    window.open(`/report/${state.contractId}`, '_blank');
+  }
+
+  function downloadJSON() {
+    if (!state.analysisData) { showToast('No analysis to export.', 'error'); return; }
+    const blob = new Blob([JSON.stringify(state.analysisData, null, 2)], { type: 'application/json' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `contract_analysis_${state.contractId}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  /* ── RESET ───────────────────────────────────────────────────────────── */
+  function resetAll() {
+    state = { contractId: null, analysisData: null, clauses: [], sortKey: 'idx', sortAsc: true, imbalanceChart: null };
+    window._selectedFile = null;
+    document.getElementById('drop-filename').textContent = '';
+    document.getElementById('contract-text').value = '';
+    document.getElementById('pdf-input').value = '';
+    document.getElementById('party-a').value = 'Party A';
+    document.getElementById('party-b').value = 'Party B';
+    document.getElementById('run-shap').checked = false;
+    document.getElementById('clause-tbody').innerHTML = `<tr><td colspan="7">
+      <div class="empty-state">
+        <div class="empty-state-icon"><i class="fa fa-file-contract"></i></div>
+        <p>Upload a contract to begin analysis</p>
+      </div>
+    </td></tr>`;
+    hide('summary-section');
+    hide('results-pair');
+    hide('gauge-section');
+    hide('shap-section');
+    hide('export-section');
+    hideStatus();
+    setStatusBadge('Ready', 'var(--gold)', 'var(--gold)');
+  }
+
+  /* ── UI HELPERS ──────────────────────────────────────────────────────── */
+  function show(id) { document.getElementById(id).classList.remove('hidden'); }
+  function hide(id) { document.getElementById(id).classList.add('hidden'); }
+
+  function showStatus(msg) {
+    show('status-bar');
+    document.getElementById('status-text').textContent = msg;
+  }
+
+  function hideStatus() { hide('status-bar'); }
+
+  function setStatusBadge(text, dotColor, borderColor) {
+    document.getElementById('status-badge').textContent = text;
+    document.getElementById('status-dot').style.background    = dotColor;
+    document.getElementById('status-pill').style.borderColor  = borderColor || 'var(--border)';
+    document.getElementById('status-pill').style.color        = dotColor;
+  }
+
+  function showToast(msg, type = 'info') {
+    const container = document.getElementById('toast-container');
+    const toast     = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `<i class="fa ${type === 'error' ? 'fa-circle-xmark' : type === 'success' ? 'fa-circle-check' : 'fa-circle-info'}" style="margin-right:0.4rem;"></i>${escHtml(msg)}`;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 4500);
+  }
+
+  /* Hide version chip if Jinja2 didn't render it (direct file open) */
+  (function () {
+    const ver = document.getElementById('api-version');
+    if (ver && ver.textContent.includes('{' + '{')) ver.style.display = 'none';
+  })();
+
+  function escHtml(str) {
+    return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+</script>
+</body>
+</html>
