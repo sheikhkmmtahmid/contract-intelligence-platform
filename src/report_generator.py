@@ -85,17 +85,19 @@ class ReportGenerator:
                 "title",
                 fontName="Helvetica-Bold",
                 fontSize=22,
+                leading=30,
                 textColor=GOLD,
                 alignment=TA_CENTER,
-                spaceAfter=6,
+                spaceAfter=16,
             ),
             "subtitle": ParagraphStyle(
                 "subtitle",
                 fontName="Helvetica",
                 fontSize=12,
+                leading=18,
                 textColor=LIGHT_GOLD,
                 alignment=TA_CENTER,
-                spaceAfter=12,
+                spaceAfter=16,
             ),
             "section_heading": ParagraphStyle(
                 "section_heading",
@@ -139,8 +141,10 @@ class ReportGenerator:
                 "metric_value",
                 fontName="Helvetica-Bold",
                 fontSize=20,
+                leading=26,
                 textColor=GOLD,
                 alignment=TA_CENTER,
+                spaceAfter=10,
             ),
         }
 
@@ -274,6 +278,7 @@ class ReportGenerator:
             f'<font color="#{imbalance_color.hexval()[2:]}">{overall_imbalance:+.1f}</font>',
             self.styles["metric_value"],
         ))
+        elements.append(Spacer(1, 6))
         elements.append(Paragraph(
             "(+100 = Maximum Party A advantage | -100 = Maximum Party B advantage | 0 = Balanced)",
             self.styles["clause_text"],
