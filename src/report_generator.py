@@ -271,7 +271,7 @@ class ReportGenerator:
         imbalance_color = RED if overall_imbalance > 20 else (BLUE if overall_imbalance < -20 else GREEN)
         elements.append(Paragraph("Overall Power Imbalance Index", self.styles["metric_label"]))
         elements.append(Paragraph(
-            f'<font color="#{imbalance_color.hexval()[1:]}">{overall_imbalance:+.1f}</font>',
+            f'<font color="#{imbalance_color.hexval()[2:]}">{overall_imbalance:+.1f}</font>',
             self.styles["metric_value"],
         ))
         elements.append(Paragraph(
@@ -363,7 +363,7 @@ class ReportGenerator:
         table_data = [headers]
 
         for i, clause in enumerate(clauses[:100], 1):  # cap at 100 rows for PDF size
-            clause_type = (clause.clause_type.split("|")[0] if clause.clause_type else "Unclassified")[:25]
+            clause_type = (clause.clause_types[0] if clause.clause_types else "Unclassified")[:25]
             anomaly_score = f"{clause.anomaly_score:.1f}" if clause.anomaly_score is not None else "N/A"
             anomaly_flag  = "YES" if clause.is_anomalous else "NO"
             imbalance     = f"{clause.power_imbalance_score:+.1f}" if clause.power_imbalance_score is not None else "N/A"
@@ -448,7 +448,7 @@ class ReportGenerator:
         for clause in shap_clauses[:5]:  # cap at 5 SHAP plots per report
             elements.append(Paragraph(
                 f"Clause ID: {clause.clause_id[:12]}... | "
-                f"Type: {clause.clause_type.split('|')[0] if clause.clause_type else 'Unknown'}",
+                f"Type: {clause.clause_types[0] if clause.clause_types else 'Unknown'}",
                 self.styles["metric_label"],
             ))
             try:

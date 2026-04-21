@@ -1213,7 +1213,7 @@
     <div class="options-row">
       <input type="checkbox" id="run-shap" />
       <label for="run-shap">Generate SHAP token-level explanations</label>
-      <span class="options-note"><i class="fa fa-triangle-exclamation"></i> Slow — adds 5–20 min total to the analysis.</span>
+      <span class="options-note"><i class="fa fa-triangle-exclamation"></i> Slow — adds significant delay to the analysis.</span>
     </div>
 
     <div class="actions-row">
@@ -1456,6 +1456,8 @@
   }
 
   /* ── SUBMIT ──────────────────────────────────────────────────────────── */
+  let _analysisController = null;
+
   async function submitContract() {
     const partyA  = document.getElementById('party-a').value.trim() || 'Party A';
     const partyB  = document.getElementById('party-b').value.trim() || 'Party B';
@@ -1468,8 +1470,11 @@
       return;
     }
 
+    _analysisController = new AbortController();
     document.getElementById('analyse-btn').disabled = true;
-    showStatus('Analysing contract \u2014 this may take 30\u201390 seconds...');
+    showStatus(runShap
+      ? 'Analysing contract with SHAP explanations \u2014 this may take 30+ minutes. Please keep this tab open.'
+      : 'Analysing contract \u2014 this may take 30\u201390 seconds...');
     setStatusBadge('Analysing', '#C87D35', '#C87D35');
 
     const formData = new FormData();
@@ -1480,7 +1485,7 @@
     formData.append('run_shap', runShap ? 'true' : 'false');
 
     try {
-      const resp = await fetch('/analyse', { method: 'POST', body: formData });
+      const resp = await fetch('/analyse', { method: 'POST', body: formData, signal: _analysisController.signal });
       if (!resp.ok) {
         const err = await resp.json();
         throw new Error(err.detail || 'Analysis failed');
@@ -1495,10 +1500,12 @@
       setStatusBadge('Complete', '#3A8C62', '#3A8C62');
       showToast('Analysis complete.', 'success');
     } catch (err) {
+      if (err.name === 'AbortError') return;
       hideStatus();
       setStatusBadge('Error', '#B94040', '#B94040');
       showToast('Error: ' + err.message, 'error');
     } finally {
+      _analysisController = null;
       document.getElementById('analyse-btn').disabled = false;
     }
   }
@@ -1925,6 +1932,14 @@
 
   /* ── RESET ───────────────────────────────────────────────────────────── */
   function resetAll() {
+    if (_analysisController) {
+      _analysisController.abort();
+      _analysisController = null;
+      document.getElementById('analyse-btn').disabled = false;
+      hideStatus();
+      setStatusBadge('Ready', 'var(--gold)', 'var(--gold)');
+      return;
+    }
     state = { contractId: null, analysisData: null, clauses: [], sortKey: 'idx', sortAsc: true, imbalanceChart: null };
     window._selectedFile = null;
     document.getElementById('drop-filename').textContent = '';
