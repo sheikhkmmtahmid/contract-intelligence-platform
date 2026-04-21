@@ -1837,7 +1837,7 @@
     const clause = state.clauses[idx];
 
     if (clause.shap_plot_path) {
-      const imgSrc = '/shap/' + clause.shap_plot_path.split('/').pop();
+      const imgSrc = '/shap/' + clause.shap_plot_path.split(/[\\/]/).pop();
       display.innerHTML = `<img src="${imgSrc}" alt="SHAP attribution plot"
         onerror="this.parentNode.innerHTML='<div class=empty-state><div class=empty-state-icon><i class=fa fa-triangle-exclamation></i></div><p>SHAP plot not yet generated. Enable SHAP on next analysis.</p></div>'" />`;
     } else {

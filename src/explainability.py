@@ -451,7 +451,7 @@ class ExplainabilityEngine:
                 png_path = self.classifier_explainer.plot_and_save(
                     shap_vals, words, clause_id, clause_type
                 )
-                result["classifier_shap_path"] = str(png_path) if png_path else None
+                result["classifier_shap_path"] = png_path.as_posix() if png_path else None
                 result["classifier_shap_values"] = [
                     {"word": w, "shap_value": float(v)}
                     for w, v in zip(words, shap_vals)
@@ -463,7 +463,7 @@ class ExplainabilityEngine:
         try:
             power_vals, base_feats = self.power_explainer.explain(clause_text)
             png_path = self.power_explainer.plot_and_save(power_vals, base_feats, clause_id)
-            result["power_shap_path"] = str(png_path) if png_path else None
+            result["power_shap_path"] = png_path.as_posix() if png_path else None
             result["power_shap_values"] = {
                 name: float(val)
                 for name, val in zip(
